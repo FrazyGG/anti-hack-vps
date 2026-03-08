@@ -3,7 +3,7 @@
 # ANTI-HACK VPS INSTALLER
 # ==============================================
 # Cara pakai:
-# curl -s https://raw.githubusercontent.com/USERNAME/anti-hack-vps/main/install.sh | bash
+# curl -s https://raw.githubusercontent.com/FrazyGG/anti-hack-vps/main/install.sh | bash
 # ==============================================
 
 GREEN='\033[0;32m'
@@ -25,32 +25,34 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
-# Cek curl/wget
+# GANTI DENGAN USERNAME GITHUB KAMU
+GITHUB_USER="ahmad62626"
+REPO_NAME="anti-hack-vps"
+BRANCH="main"
+
+# Install curl jika belum ada
 if ! command -v curl &> /dev/null; then
     echo -e "${YELLOW}📦 Menginstall curl...${NC}"
     apt-get update -qq && apt-get install curl -y -qq
 fi
 
 # Tentukan direktori install
-INSTALL_DIR="/opt/anti-hack-vps"
-mkdir -p $INSTALL_DIR
+INSTALL_DIR="/usr/local/bin"
 
 echo -e "${YELLOW}📥 Mendownload script dari GitHub...${NC}"
 
 # Download file utama
-curl -s -o $INSTALL_DIR/anti-hack-manager.sh https://raw.githubusercontent.com/USERNAME/anti-hack-vps/main/anti-hack-manager.sh
+curl -s -o $INSTALL_DIR/anti-hack https://raw.githubusercontent.com/${GITHUB_USER}/${REPO_NAME}/${BRANCH}/anti-hack-manager.sh
 
 # Cek download berhasil
-if [ ! -f "$INSTALL_DIR/anti-hack-manager.sh" ]; then
+if [ ! -f "$INSTALL_DIR/anti-hack" ]; then
     echo -e "${RED}❌ Gagal mendownload script!${NC}"
+    echo "   Cek: https://github.com/${GITHUB_USER}/${REPO_NAME}"
     exit 1
 fi
 
 # Beri izin execute
-chmod +x $INSTALL_DIR/anti-hack-manager.sh
-
-# Buat symlink di /usr/local/bin
-ln -sf $INSTALL_DIR/anti-hack-manager.sh /usr/local/bin/anti-hack
+chmod +x $INSTALL_DIR/anti-hack
 
 echo -e "${GREEN}✅ Installasi selesai!${NC}"
 echo ""
@@ -61,4 +63,4 @@ echo -e "${CYAN}Menjalankan Anti-Hack Manager...${NC}"
 sleep 2
 
 # Jalankan script
-$INSTALL_DIR/anti-hack-manager.sh
+anti-hack
